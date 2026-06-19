@@ -4,11 +4,10 @@ import { EventEmitter } from 'events';
 import { useEffect, useState } from 'react';
 import { useVariables } from '@gitroom/react/helpers/variable.context';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
-import { ChatbaseComponent } from '@gitroom/frontend/components/layout/chatbase.component';
 export const supportEmitter = new EventEmitter();
 export const Support = () => {
   const [show, setShow] = useState(true);
-  const { discordUrl, isChatBase } = useVariables();
+  const { discordUrl } = useVariables();
   const t = useT();
 
   useEffect(() => {
@@ -17,9 +16,6 @@ export const Support = () => {
       supportEmitter.off('state', setShow);
     };
   }, []);
-  if (isChatBase) {
-    return <ChatbaseComponent />;
-  }
   if (!discordUrl || !show) return null;
   return (
     <div

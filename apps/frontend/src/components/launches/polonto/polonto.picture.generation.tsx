@@ -36,10 +36,6 @@ const GenerateTab = observer(({ store }: any) => {
   const t = useT();
 
   const handleGenerate = async () => {
-    if (data?.credits <= 0) {
-      window.open('/billing', '_blank');
-      return;
-    }
     if (!inputRef.current.value) {
       toast.show('Please type your prompt', 'warning');
       return;

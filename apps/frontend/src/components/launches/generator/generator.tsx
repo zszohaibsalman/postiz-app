@@ -294,18 +294,6 @@ export const GeneratorComponent = () => {
   const modal = useModals();
   const all = useCalendar();
   const generate = useCallback(async () => {
-    if (!user?.tier?.ai) {
-      if (
-        await deleteDialog(
-          t('upgrade_required', 'You need to upgrade to use this feature'),
-          t('move_to_billing', 'Move to billing'),
-          t('payment_required', 'Payment Required')
-        )
-      ) {
-        router.push('/billing');
-      }
-      return;
-    }
     modal.openModal({
       title: t('generate_posts', 'Generate Posts'),
       withCloseButton: false,

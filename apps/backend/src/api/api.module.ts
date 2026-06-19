@@ -3,8 +3,6 @@ import { AuthController } from '@gitroom/backend/api/routes/auth.controller';
 import { AuthService } from '@gitroom/backend/services/auth/auth.service';
 import { UsersController } from '@gitroom/backend/api/routes/users.controller';
 import { AuthMiddleware } from '@gitroom/backend/services/auth/auth.middleware';
-import { StripeController } from '@gitroom/backend/api/routes/stripe.controller';
-import { StripeService } from '@gitroom/nestjs-libraries/services/stripe.service';
 import { AnalyticsController } from '@gitroom/backend/api/routes/analytics.controller';
 import { PoliciesGuard } from '@gitroom/backend/services/auth/permissions/permissions.guard';
 import { PermissionsService } from '@gitroom/backend/services/auth/permissions/permissions.service';
@@ -14,7 +12,6 @@ import { SettingsController } from '@gitroom/backend/api/routes/settings.control
 import { PostsController } from '@gitroom/backend/api/routes/posts.controller';
 import { MediaController } from '@gitroom/backend/api/routes/media.controller';
 import { UploadModule } from '@gitroom/nestjs-libraries/upload/upload.module';
-import { BillingController } from '@gitroom/backend/api/routes/billing.controller';
 import { NotificationsController } from '@gitroom/backend/api/routes/notifications.controller';
 import { OpenaiService } from '@gitroom/nestjs-libraries/openai/openai.service';
 import { ExtractContentService } from '@gitroom/nestjs-libraries/openai/extract.content.service';
@@ -51,7 +48,6 @@ const authenticatedController = [
   SettingsController,
   PostsController,
   MediaController,
-  BillingController,
   NotificationsController,
   CopilotController,
   WebhookController,
@@ -69,7 +65,6 @@ const authenticatedController = [
   imports: [UploadModule],
   controllers: [
     RootController,
-    StripeController,
     AuthController,
     PublicController,
     MonitorController,
@@ -80,7 +75,6 @@ const authenticatedController = [
   ],
   providers: [
     AuthService,
-    StripeService,
     OpenaiService,
     ExtractContentService,
     AuthMiddleware,

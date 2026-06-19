@@ -22,7 +22,6 @@ import {
   organizationId,
   postId as postIdSearchParam,
 } from '@gitroom/nestjs-libraries/temporal/temporal.search.attribute';
-import { SubscriptionService } from '@gitroom/nestjs-libraries/database/prisma/subscriptions/subscription.service';
 
 // Drops fields the workflow and downstream activities never read — biggest wins are `error` (grows per retry) and `childrenPost` (Prisma side-loads it on every recursive row).
 function slimPost(post: any) {
@@ -61,8 +60,7 @@ export class PostActivity {
     private _integrationService: IntegrationService,
     private _refreshIntegrationService: RefreshIntegrationService,
     private _webhookService: WebhooksService,
-    private _temporalService: TemporalService,
-    private _subscriptionService: SubscriptionService
+    private _temporalService: TemporalService
   ) {}
 
   @ActivityMethod()
@@ -112,14 +110,6 @@ export class PostActivity {
 
   @ActivityMethod()
   async getPost(orgId: string, postId: string) {
-    if (process.env.STRIPE_SECRET_KEY) {
-      const subscription = await this._subscriptionService.getSubscription(
-        orgId
-      );
-      if (!subscription) {
-        return false;
-      }
-    }
     const post = await this._postService.getPostById(postId, orgId);
     if (post.deletedAt) {
       return false;
@@ -130,15 +120,6 @@ export class PostActivity {
 
   @ActivityMethod()
   async getPostsList(orgId: string, postId: string) {
-    if (process.env.STRIPE_SECRET_KEY) {
-      const subscription = await this._subscriptionService.getSubscription(
-        orgId
-      );
-      if (!subscription) {
-        return [];
-      }
-    }
-
     const getPosts = await this._postService.getPostsRecursively(
       postId,
       true,
@@ -206,16 +187,6 @@ export class PostActivity {
 
   @ActivityMethod()
   async postSocial(integration: Integration, posts: Post[]) {
-    if (process.env.STRIPE_SECRET_KEY) {
-      const subscription = await this._subscriptionService.getSubscription(
-        integration.organizationId
-      );
-
-      if (!subscription) {
-        throw new Error('No active subscription found for this organization.');
-      }
-    }
-
     const getIntegration = this._integrationManager.getSocialIntegration(
       integration.providerIdentifier
     );

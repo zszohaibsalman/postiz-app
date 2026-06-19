@@ -1,5 +1,5 @@
 import { PrismaRepository } from '@gitroom/nestjs-libraries/database/prisma/prisma.service';
-import { Role, ShortLinkPreference, SubscriptionTier } from '@prisma/client';
+import { Role, ShortLinkPreference } from '@prisma/client';
 import { Injectable } from '@nestjs/common';
 import { AuthService } from '@gitroom/helpers/auth/auth.service';
 import { CreateOrgUserDto } from '@gitroom/nestjs-libraries/dtos/auth/create.org.user.dto';
@@ -216,24 +216,6 @@ export class OrganizationRepository {
     });
 
     if (checkIfInviteExists) {
-      return false;
-    }
-
-    const checkForSubscription =
-      await this._organization.model.organization.findFirst({
-        where: {
-          id: orgId,
-        },
-        select: {
-          subscription: true,
-        },
-      });
-
-    if (
-      process.env.STRIPE_PUBLISHABLE_KEY &&
-      checkForSubscription?.subscription?.subscriptionTier ===
-        SubscriptionTier.STANDARD
-    ) {
       return false;
     }
 

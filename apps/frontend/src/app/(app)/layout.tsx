@@ -34,9 +34,7 @@ const jakartaSans = Plus_Jakarta_Sans({
 export default async function AppLayout({ children }: { children: ReactNode }) {
   const cookieStore = await cookies();
   const language = cookieStore.get(cookieName)?.value || fallbackLng;
-  const Plausible = !!process.env.STRIPE_PUBLISHABLE_KEY
-    ? PlausibleProvider
-    : Fragment;
+  const Plausible = Fragment;
   return (
     <html>
       <head>
@@ -61,9 +59,9 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           environment={process.env.NODE_ENV!}
           backendUrl={process.env.NEXT_PUBLIC_BACKEND_URL!}
           plontoKey={process.env.NEXT_PUBLIC_POLOTNO!}
-          stripeClient={process.env.STRIPE_PUBLISHABLE_KEY!}
-          isChatBase={!!process.env.CHATBASE_TOKEN}
-          billingEnabled={!!process.env.STRIPE_PUBLISHABLE_KEY}
+          stripeClient=""
+          isChatBase={false}
+          billingEnabled={true}
           discordUrl={process.env.NEXT_PUBLIC_DISCORD_SUPPORT!}
           frontEndUrl={process.env.FRONTEND_URL!}
           isGeneral={!!process.env.IS_GENERAL}
@@ -74,7 +72,7 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
           cloudflareUrl={process.env.CLOUDFLARE_BUCKET_URL || ''}
           mainUrl={process.env.MAIN_URL || ''}
           mcpUrl={process.env.MCP_URL}
-          dub={!!process.env.STRIPE_PUBLISHABLE_KEY}
+          dub={false}
           facebookPixel={process.env.NEXT_PUBLIC_FACEBOOK_PIXEL!}
           telegramBotName={process.env.TELEGRAM_BOT_NAME!}
           neynarClientId={process.env.NEYNAR_CLIENT_ID!}

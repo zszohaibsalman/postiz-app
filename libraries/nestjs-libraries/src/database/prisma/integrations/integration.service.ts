@@ -252,16 +252,6 @@ export class IntegrationService {
   }
 
   async enableChannel(org: string, totalChannels: number, id: string) {
-    const integrations = (
-      await this._integrationRepository.getIntegrationsList(org)
-    ).filter((f) => !f.disabled);
-    if (
-      !!process.env.STRIPE_PUBLISHABLE_KEY &&
-      integrations.length >= totalChannels
-    ) {
-      throw new Error('You have reached the maximum number of channels');
-    }
-
     return this._integrationRepository.enableChannel(org, id);
   }
 
